@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effrayant Site Web</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        .main-text {
+            font-size: 2rem;
+            text-align: center;
+            animation: glitch 3s infinite;
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 10px;
+            font-size: 1rem;
+            color: white;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            20% { text-shadow: -2px -2px red; }
+            40% { text-shadow: 2px -2px red; }
+            60% { text-shadow: -2px 2px red; }
+            80% { text-shadow: 0px 0px red; }
+            100% { text-shadow: 2px 2px red; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-text">
+        You got hacked by Anton Maxime OUSTIOUGOV
+    </div>
+    <div class="footer-text">
+        Ты глупый
+    </div>
+    <script>
+        function showDeviceInfo() {
+            const batteryPromise = navigator.getBattery ? navigator.getBattery() : Promise.resolve(null);
+
+            batteryPromise.then(battery => {
+                const batteryLevel = battery ? `${Math.round(battery.level * 100)}%` : 'N/A';
+                const userAgent = navigator.userAgent;
+                let deviceInfo = 'Unknown Device';
+                
+                if (/android/i.test(userAgent)) {
+                    const match = userAgent.match(/Android\s([0-9\.]+)/);
+                    deviceInfo = `Android ${match ? match[1] : 'Unknown'}`;
+                } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    const match = userAgent.match(/OS\s([0-9_]+)/);
+                    deviceInfo = `iOS ${match ? match[1].replace(/_/g, '.') : 'Unknown'}`;
+                }
+
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+
+                alert(`Battery Level: ${batteryLevel}\nDevice: ${deviceInfo}\nScreen Size: ${screenWidth} x ${screenHeight}`);
+            });
+        }
+
+        function createBloodStain(x, y) {
+            const stain = document.createElement('div');
+            stain.style.position = 'absolute';
+            stain.style.left = `${x}px`;
+            stain.style.top = `${y}px`;
+            stain.style.width = '20px';
+            stain.style.height = '20px';
+            stain.style.backgroundColor = 'red';
+            stain.style.borderRadius = '50%';
+            stain.style.opacity = '0.8';
+            stain.style.transition = 'opacity 1s ease';
+
+            document.body.appendChild(stain);
+
+            setTimeout(() => {
+                stain.style.opacity = '0';
+                setTimeout(() => {
+                    stain.remove();
+                }, 1000);
+            }, 1000);
+        }
+
+        document.addEventListener('click', (e) => {
+            createBloodStain(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            createBloodStain(touch.clientX, touch.clientY);
+        });
+
+        showDeviceInfo();
+    </script>
+</body>
+</html>
